@@ -1,0 +1,24 @@
+- name: create a instance
+  google.cloud.gcp_compute_instance:
+    name: test_object
+    machine_type: n1-standard-1
+    disks:
+    - auto_delete: 'true'
+      boot: 'true'
+      source: "{{ disk }}"
+    - auto_delete: 'true'
+      interface: NVME
+      type: SCRATCH
+      initialize_params:
+        disk_type: local-ssd
+    network_interfaces:
+    - network: "oob-vpc"
+    - network_ip: "10.10.7.111/24"
+    - subnetwork: "oob-vdi"
+    
+    zone: us-east1-b
+    project: Cyber-Range-Dev
+    auth_kind: serviceaccount
+    service_account_email: ansible@cyber-range-dev.iam.gserviceaccount.com
+    service_account_file: "/tmp/auth.pem"
+    state: present
